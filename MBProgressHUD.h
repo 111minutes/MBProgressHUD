@@ -98,7 +98,9 @@ typedef void (^MBProgressHUDCompletionBlock)();
  *   indicator view.
  * - If also the detailsLabelText property is set then another label is placed below the first label.
  */
-@interface MBProgressHUD : UIView
+@interface MBProgressHUD : UIView {
+    BOOL canHidenByUserTouch;
+}
 
 /**
  * Creates a new HUD, adds it to provided view and shows it. The counterpart to this method is hideHUDForView:animated:.

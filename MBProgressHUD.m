@@ -225,9 +225,18 @@ static const CGFloat kDetailsLabelFontSize = 12.f;
 #endif
 }
 
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+    if (canHidenByUserTouch) {
+        [self hide:NO];
+        canHidenByUserTouch = NO;
+    }
+}
+
 #pragma mark - Show & hide
 
 - (void)show:(BOOL)animated {
+    
+    canHidenByUserTouch = NO;
 	useAnimation = animated;
 	// If the grace time is set postpone the HUD display
 	if (self.graceTime > 0.0) {
@@ -243,6 +252,7 @@ static const CGFloat kDetailsLabelFontSize = 12.f;
 
 - (void)hide:(BOOL)animated {
 	useAnimation = animated;
+    canHidenByUserTouch = YES;
 	// If the minShow time is set, calculate how long the hud was shown,
 	// and pospone the hiding operation if necessary
 	if (self.minShowTime > 0.0 && showStarted) {
@@ -258,10 +268,12 @@ static const CGFloat kDetailsLabelFontSize = 12.f;
 }
 
 - (void)hide:(BOOL)animated afterDelay:(NSTimeInterval)delay {
+    canHidenByUserTouch = YES;
 	[self performSelector:@selector(hideDelayed:) withObject:[NSNumber numberWithBool:animated] afterDelay:delay];
 }
 
 - (void)hideDelayed:(NSNumber *)animated {
+    canHidenByUserTouch = YES;
 	[self hide:[animated boolValue]];
 }
 
