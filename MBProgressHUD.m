@@ -227,7 +227,7 @@ static const CGFloat kDetailsLabelFontSize = 12.f;
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
     if (canHidenByUserTouch) {
-        [self hide:NO];
+        [self hide:useAnimation];
         canHidenByUserTouch = NO;
     }
 }
@@ -269,12 +269,14 @@ static const CGFloat kDetailsLabelFontSize = 12.f;
 
 - (void)hide:(BOOL)animated afterDelay:(NSTimeInterval)delay {
     canHidenByUserTouch = YES;
+    useAnimation = animated;
 	[self performSelector:@selector(hideDelayed:) withObject:[NSNumber numberWithBool:animated] afterDelay:delay];
 }
 
 - (void)hideDelayed:(NSNumber *)animated {
     canHidenByUserTouch = YES;
-	[self hide:[animated boolValue]];
+    useAnimation = [animated boolValue];
+	[self hide:useAnimation];
 }
 
 #pragma mark - Timer callbacks
